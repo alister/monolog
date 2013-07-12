@@ -20,13 +20,16 @@ class UidProcessor
 {
     private $uid;
 
-    public function __construct($length = 7)
+    public function __construct($length = 7, $uid = null)
     {
         if (!is_int($length) || $length > 32 || $length < 1) {
             throw new \InvalidArgumentException('The uid length must be an integer between 1 and 32');
         }
 
-        $this->uid = substr(hash('md5', uniqid('', true)), 0, $length);
+        if (!empty($uid)) {
+            $uid = substr(hash('md5', uniqid('', true)), 0, $length);
+        }
+        $this->uid = $uid;
     }
 
     public function __invoke(array $record)
